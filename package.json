@@ -1,0 +1,34 @@
+{
+  "name": "gas-monorepo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "build:enrollment:test": "rollup -c --environment TARGET:enrollment-tools,BUILD:test",
+    "build:enrollment:live": "rollup -c --environment TARGET:enrollment-tools,BUILD:live",
+    "deploy:enrollment:test": "pnpm build:enrollment:test && pnpm run push:enrollment:test",
+    "deploy:enrollment:live": "pnpm build:enrollment:live && pnpm run push:enrollment:live",
+    "push:enrollment:test": "clasp push --force --project packages/enrollment-tools/dist/test/.clasp.json",
+    "push:enrollment:live": "clasp push --force --project packages/enrollment-tools/dist/live/.clasp.json",
+    "build:attendance:test": "rollup -c --environment TARGET:attendance-tracker,BUILD:test",
+    "build:attendance:live": "rollup -c --environment TARGET:attendance-tracker,BUILD:live",
+    "deploy:attendance:test": "pnpm build:attendance:test && pnpm run push:attendance:test",
+    "deploy:attendance:live": "pnpm build:attendance:live && pnpm run push:attendance:live",
+    "push:attendance:test": "clasp push --force --project packages/attendance-tracker/dist/test/.clasp.json",
+    "push:attendance:live": "clasp push --force --project packages/attendance-tracker/dist/live/.clasp.json"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@google/clasp": "^3.2.0",
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/google-apps-script": "^1.0.83",
+    "rollup": "^4.12.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  }
+}

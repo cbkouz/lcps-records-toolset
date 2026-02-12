@@ -1,0 +1,52 @@
+{
+  "folders": [
+    {
+      "name": "enrollment tools",
+      "path": "packages/enrollment-tools/"
+    },
+    {
+      "name": "shared",
+      "path": "packages/shared/"
+    },
+    {
+      "name": "lcps-records-toolset",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.claspignore": true,
+      "**/.git*": true,
+      "**/.vscode/": true,
+      "**/appsscript.json": true,
+      "**/biome.json": true,
+      "**/clasp*": true,
+      "**/dist/": false,
+      "**/node_modules/": true,
+      "**/package-lock.json": true,
+      "**/packages/": true,
+      "**/pnpm*": true,
+      "**/tsconfig*": true,
+    },
+    "terminal.integrated.defaultProfile.linux": "Apps Script Dev",
+    "terminal.integrated.profiles.linux": {
+      "Apps Script Dev": {
+        "path": "distrobox",
+        "args": [
+          "enter",
+          "apps-script-dev"
+        ],
+        "icon": "terminal-linux"
+      }
+    },
+    "chat.tools.terminal.terminalProfile.linux": {
+      "path": "distrobox",
+      "args": [
+        "enter",
+        "apps-script-dev"
+      ],
+      "icon": "terminal-linux"
+    },
+    "editor.tabSize": 2
+  },
+}

@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/shared"
+    },
+    {
+      "path": "./packages/enrollment-tools"
+    },
+    {
+      "path": "./packages/attendance-tracker"
+    }
+  ]
+}
