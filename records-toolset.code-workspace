@@ -7,10 +7,6 @@
     {
       "name": "shared",
       "path": "packages/shared/"
-    },
-    {
-      "name": "lcps-records-toolset",
-      "path": "."
     }
   ],
   "settings": {
@@ -26,7 +22,7 @@
       "**/package-lock.json": true,
       "**/packages/": true,
       "**/pnpm*": true,
-      "**/tsconfig*": true,
+      "**/tsconfig*": false,
     },
     "terminal.integrated.defaultProfile.linux": "Apps Script Dev",
     "terminal.integrated.profiles.linux": {

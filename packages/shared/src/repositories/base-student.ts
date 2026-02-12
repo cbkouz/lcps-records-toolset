@@ -1,38 +1,43 @@
 import { ClassSheetLayout } from "@shared/config/class-layouts";
+import { BaseStudent } from "@shared/config/types";
 import { isValidId } from "@shared/utilities/data-utils";
 
-export abstract class BaseStudentRepository {
-  protected readonly START_ROW = 2; // Headers in row 1
-  protected readonly STRIDE = 2; // To account for 2-rows student data pairs
+export interface StudentRowPair {
+  dataRow: any[];
+  notesRow: any[];
+}
 
+export abstract class BaseStudentRepository<T extends BaseStudent> {
   constructor(
-    protected readonly sheet: GoogleAppsScript.Spreadsheet.Sheet,
-    protected readonly layout: ClassSheetLayout,
-  ) {  }
+    protected sheet: GoogleAppsScript.Spreadsheet.Sheet,
+    protected layout: ClassSheetLayout,
+  ) {}
 
-  public getStudents(): T[] {
-    const rawData = this.readRawData();
-    if (rawData.length === 0) return []; // No data
-    const students: T[] = [];
-    for (let i = 0; i < rawData.length;) {
-      const row = rawData[i];
-      if (!isValidId(row[this.layout.id])) {
-        i++
+  public getStudents(rawData?: any[][]): T[] {
+    // assume header in row 1
+    const data = rawData
+      ? rawData
+      : this.sheet.getDataRange().getValues().slice(1);
+    const studentRows = this.pairStudentRows(data);
+    return [];
+  }
+
+  protected pairStudentRows(data: any[][]): StudentRowPair[] {
+    const students: StudentRowPair[] = [];
+    for (let i = 0; i < data.length; ) {
+      const dataRow = data[i];
+      const notesRow = data[i + 1];
+      const isStudentRow = isValidId(dataRow[this.layout.id]);
+      const nextRowIsNotes = notesRow && !isValidId(notesRow[this.layout.id]);
+
+      if (isStudentRow && nextRowIsNotes) {
+        students.push({ dataRow, notesRow });
+        i += 2; // to account for paired rows
       } else {
-        const student = this.mapBlockToStudent()
+        i++; // try the next row
       }
-
+    }
+    return students;
   }
-
-  protected readRawData(): any[][] {
-    const lastRow = this.sheet.getLastRow();
-    if (lastRow < this.START_ROW) return []; // No data to process
-    const numRows = lastRow - this.START_ROW + 1;
-    const numCols = this.sheet.getLastColumn();
-
-    return this.sheet.getRange(this.START_ROW, 1, numRows, numCols).getValues();
-  }
-
-
-
-
+  protected createStudentMap(studentRows: StudentRowPair[]): T[] {}
+}

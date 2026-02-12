@@ -4,16 +4,18 @@ export type ArrayIndex = number & { __: "0-based" };
 export type SheetIndex = number & { __: "1-based" };
 
 // converts SheetIndex (1-based) to ArrayIndex(0-based)
-export const toArrayIndex = (i: SheetIndex): ArrayIndex => (i - 1) as ArrayIndex;
+export const toArrayIndex = (i: SheetIndex): ArrayIndex =>
+  (i - 1) as ArrayIndex;
 
 // converts ArrayIndex (0-based) to SheetIndex (1-based)
-export const toSheetIndex = (i: ArrayIndex): SheetIndex => (i + 1) as SheetIndex;
+export const toSheetIndex = (i: ArrayIndex): SheetIndex =>
+  (i + 1) as SheetIndex;
 
 // initializes ArrayIndex
 export const asArrayIndex = (n: number): ArrayIndex => n as ArrayIndex;
 // initializes SheetIndex
 export const asSheetIndex = (n: number): SheetIndex => n as SheetIndex;
-  
+
 export interface SheetMetadata {
   label?: string;
   type?: string;
@@ -28,3 +30,8 @@ export type ColumnDef<T> = {
   header: string;
   key: keyof T | null;
 };
+
+export interface BaseStudent {
+  id: string;
+  name: string;
+}

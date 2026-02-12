@@ -1,4 +1,4 @@
-import { ColumnDef, SheetMetadata } from "./config-types";
+import { ColumnDef, SheetMetadata } from "./types";
 
 export const CONFIG_SHEET_NAME = "_ConfigData";
 

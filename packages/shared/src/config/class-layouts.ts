@@ -1,8 +1,9 @@
-import { ArrayIndex, asArrayIndex, SheetIndex } from "./config-types";
+import { ArrayIndex, asArrayIndex, SheetIndex } from "./types";
 import { SHEET_LAYOUTS } from "./shared-config";
 
 export interface ClassSheetLayout {
   // 0-based col indexes
+  [key: string]: ArrayIndex | undefined;
   id: ArrayIndex;
   name: ArrayIndex;
   gradeLevel: ArrayIndex;
