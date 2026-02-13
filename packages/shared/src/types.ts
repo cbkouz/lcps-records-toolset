@@ -11,10 +11,7 @@ export const toArrayIndex = (i: SheetIndex): ArrayIndex =>
 export const toSheetIndex = (i: ArrayIndex): SheetIndex =>
   (i + 1) as SheetIndex;
 
-// initializes ArrayIndex
-export const asArrayIndex = (n: number): ArrayIndex => n as ArrayIndex;
-// initializes SheetIndex
-export const asSheetIndex = (n: number): SheetIndex => n as SheetIndex;
+export const asArrayIndex = (i: number): ArrayIndex => i as ArrayIndex;
 
 export interface SheetMetadata {
   label?: string;
@@ -31,7 +28,7 @@ export type ColumnDef<T> = {
   key: keyof T | null;
 };
 
-export interface BaseStudent {
-  id: string;
-  name: string;
+export interface BaseLayout {
+  id: ArrayIndex;
+  name: ArrayIndex;
 }

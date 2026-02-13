@@ -27,12 +27,6 @@ export const MODULES = {
 
 export const ALL_COLUMNS = { ...CORE_COLUMNS, ...MODULES };
 
-export const SHEET_LAYOUTS = {
-  REFOCUS: "refocus",
-  ELEMENTARY: "elementary",
-  DAY_PROGRAM: "dayProgram",
-} as const;
-
 export const COLORS = {
   DEFAULT: "#ffffff",
   STATUS: {

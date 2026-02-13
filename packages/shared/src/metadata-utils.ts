@@ -1,10 +1,6 @@
-import {
-  ClassSheetLayout,
-  DayProgram,
-  LayoutKey,
-  layoutRegistry,
-} from "@shared/config/class-layouts";
-import { CORE_COLUMNS } from "@shared/config/shared-config";
+import { CORE_COLUMNS } from "@shared/shared-config";
+import { LAYOUT_REGISTRY } from "./layouts";
+import { BaseLayout } from "./types";
 
 export interface SheetWithTags {
   sheet: GoogleAppsScript.Spreadsheet.Sheet;
@@ -15,7 +11,7 @@ export interface SheetsByLayout {
   default: GoogleAppsScript.Spreadsheet.Sheet[];
   other: {
     sheet: GoogleAppsScript.Spreadsheet.Sheet;
-    layout: ClassSheetLayout;
+    layout: BaseLayout;
   }[];
 }
 
@@ -114,9 +110,16 @@ export class MetadataUtils {
     };
 
     for (const { sheet, tags } of taggedSheets) {
-      const layoutKey = tags.get(CORE_COLUMNS.LAYOUT.key) as LayoutKey;
-      const layout = layoutRegistry[layoutKey];
-      if (layout === DayProgram) {
+      const layoutKey = tags.get(CORE_COLUMNS.LAYOUT.key);
+      if (!layoutKey) {
+        console.warn(
+          `Sheet '${sheet.getName()}' has module tag '${moduleKey}' but no layout specified. Skipping.`,
+        );
+        continue;
+      }
+
+      const layout = LAYOUT_REGISTRY[layoutKey];
+      if (String(layout).toLowerCase() === String("dayProgram").toLowerCase()) {
         catalog.default.push(sheet);
       } else {
         catalog.other.push({ sheet, layout });
