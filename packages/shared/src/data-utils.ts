@@ -16,3 +16,13 @@ export function formatDate(
 ): string {
   return Utilities.formatDate(date, Session.getScriptTimeZone(), format);
 }
+
+export function toColumnLetter(index: ArrayIndex): string {
+  let temp = index as number;
+  let letter = "";
+  while (temp >= 0) {
+    letter = String.fromCharCode((temp % 26) + 65);
+    temp = Math.floor(temp / 26) - 1;
+  }
+  return letter;
+}

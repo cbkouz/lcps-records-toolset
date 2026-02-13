@@ -21,4 +21,10 @@ export class SheetUtils {
     }
     return SpreadsheetApp.openById(sheetId);
   }
+
+  static buildSheetsDictionary(
+    ss: GoogleAppsScript.Spreadsheet.Spreadsheet,
+  ): Map<number, GoogleAppsScript.Spreadsheet.Sheet> {
+    return new Map(ss.getSheets().map((sheet) => [sheet.getSheetId(), sheet]));
+  }
 }

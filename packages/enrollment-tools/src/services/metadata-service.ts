@@ -1,11 +1,6 @@
-import { SheetUtils } from "@shared/utilities/sheet-utils";
-
-import {
-  ALL_COLUMNS,
-  CONFIG_SHEET_NAME,
-  CORE_COLUMNS,
-} from "@shared/config/shared-config";
-import { SheetMetadata } from "@shared/config/types";
+import { CONFIG_SHEET_NAME, CORE_COLUMNS, ALL_COLUMNS } from "@shared/shared-config";
+import { SheetUtils } from "@shared/sheet-utils";
+import { SheetMetadata } from "@shared/types";
 import { SHEET_ID_PROPERTY } from "../config";
 
 export class MetadataConfigService {

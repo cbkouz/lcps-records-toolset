@@ -1,5 +1,5 @@
-import { CORE_COLUMNS } from "@shared/shared-config";
-import { LAYOUT_REGISTRY } from "./layouts";
+import { LAYOUT_REGISTRY, LayoutKey } from "./layouts";
+import { CORE_COLUMNS } from "./shared-config";
 import { BaseLayout } from "./types";
 
 export interface SheetWithTags {
@@ -7,14 +7,10 @@ export interface SheetWithTags {
   tags: Map<string, string>;
 }
 
-export interface SheetsByLayout {
-  default: GoogleAppsScript.Spreadsheet.Sheet[];
-  other: {
-    sheet: GoogleAppsScript.Spreadsheet.Sheet;
-    layout: BaseLayout;
-  }[];
+export interface SheetWithLayout {
+  sheet: GoogleAppsScript.Spreadsheet.Sheet;
+  layout: BaseLayout;
 }
-
 export class MetadataUtils {
   static createMetadataMap(
     sheet: GoogleAppsScript.Spreadsheet.Sheet,
@@ -57,77 +53,19 @@ export class MetadataUtils {
     });
   }
 
-  static inspectActiveSheetMetadata() {
-    const sheet = SpreadsheetApp.getActiveSheet();
-    const ui = SpreadsheetApp.getUi();
-
-    // 1. Get the data using your helper
-    const metaMap = this.createMetadataMap(sheet);
-
-    if (metaMap.size === 0) {
-      ui.alert(`No metadata found on sheet: ${sheet.getName()}`);
-      return;
-    }
-
-    // 2. Build the HTML string manually
-    let html = `
-      <style>
-        body { font-family: sans-serif; padding: 10px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background: #eee; }
-      </style>
-      <h3>Metadata: ${sheet.getName()}</h3>
-      <table>
-        <tr><th>Key</th><th>Value</th></tr>`;
-
-    // 3. Loop through map to add rows
-    metaMap.forEach((value, key) => {
-      html += `<tr><td><strong>${key}</strong></td><td>${value}</td></tr>`;
-    });
-
-    html += `</table>
-      <br>
-      <button onclick="google.script.host.close()">Close</button>
-    `;
-
-    // 4. Render
-    const output = HtmlService.createHtmlOutput(html)
-      .setWidth(400)
-      .setHeight(600);
-
-    ui.showModalDialog(output, "Metadata Inspector");
-  }
-
-  static buildCatalogForModule(
+  static getSheetsWithLayouts(
     ss: GoogleAppsScript.Spreadsheet.Spreadsheet,
     moduleKey: string,
-  ): SheetsByLayout {
-    const taggedSheets = MetadataUtils.getSheetsWithTags(ss, moduleKey);
-    const catalog: SheetsByLayout = {
-      default: [],
-      other: [],
-    };
-
-    for (const { sheet, tags } of taggedSheets) {
-      const layoutKey = tags.get(CORE_COLUMNS.LAYOUT.key);
-      if (!layoutKey) {
-        console.warn(
-          `Sheet '${sheet.getName()}' has module tag '${moduleKey}' but no layout specified. Skipping.`,
-        );
-        continue;
-      }
-
-      const layout = LAYOUT_REGISTRY[layoutKey];
-      if (String(layout).toLowerCase() === String("dayProgram").toLowerCase()) {
-        catalog.default.push(sheet);
-      } else {
-        catalog.other.push({ sheet, layout });
-      }
-    }
-    console.log(
-      `Catalog built for module '${moduleKey}': ${catalog.default.length} default sheets, ${catalog.other.length} other sheets.`,
-    );
-    return catalog;
+  ): SheetWithLayout[] {
+    const taggedSheets = this.getSheetsWithTags(ss, moduleKey);
+    return taggedSheets
+      .filter((sheetData) => sheetData.tags.has(CORE_COLUMNS.LAYOUT.key))
+      .map((sheetData) => {
+        const layoutKey = sheetData.tags.get(
+          CORE_COLUMNS.LAYOUT.key,
+        ) as LayoutKey;
+        const layout = LAYOUT_REGISTRY[layoutKey];
+        return { sheet: sheetData.sheet, layout: layout };
+      }) as SheetWithLayout[];
   }
 }

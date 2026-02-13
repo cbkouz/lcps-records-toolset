@@ -49,4 +49,6 @@ export const LAYOUT_REGISTRY: Record<string, BaseLayout> = {
   refocus: REFOCUS_LAYOUT,
   elementary: ELEMENTARY_LAYOUT,
   dayProgram: DAY_PROGRAM_LAYOUT,
-};
+} satisfies Record<string, BaseLayout>;
+
+export type LayoutKey = keyof typeof LAYOUT_REGISTRY;
