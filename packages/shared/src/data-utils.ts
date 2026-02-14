@@ -10,6 +10,11 @@ export function isStudentRow(row: any[], idCol: ArrayIndex): boolean {
   return isValidId(id);
 }
 
+export function setMidnight(d: Date): Date {
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 export function formatDate(
   date: Date = new Date(),
   format: string = "yyyy-MM-dd",
