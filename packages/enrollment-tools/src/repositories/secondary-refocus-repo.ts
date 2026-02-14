@@ -1,28 +1,7 @@
 import { isStudentRow, setMidnight } from "@shared/data-utils";
 import { RefocusLayout } from "@shared/layouts";
 import { ArrayIndex } from "@shared/types";
-
-interface RefocusRecord {
-  dataRow: any[];
-  notesRow: any[];
-}
-
-interface RefocusStudent {
-  id: string;
-  name: string;
-  gradeLevel: string;
-  enrollmentDate: string;
-  startDate: Date;
-  endDate: Date;
-  supportNeeded?: string;
-  datesAttended?: string[];
-  rows: RefocusRecord;
-}
-
-export interface RefocusSections {
-  ms: RefocusStudent[];
-  hs: RefocusStudent[];
-}
+import { RefocusSections, RefocusStudent, RefocusRecord } from "../types";
 
 // Divider text in col B
 const HS_MS_DIVIDER = { text: "LCMS Student", column: 1 as ArrayIndex };

@@ -1,6 +1,5 @@
-import { LAYOUT_REGISTRY, LayoutKey } from "./layouts";
+import { BaseLayout, LAYOUT_REGISTRY, LayoutKey } from "./layouts";
 import { CORE_COLUMNS } from "./shared-config";
-import { BaseLayout } from "./types";
 
 export interface SheetWithTags {
   sheet: GoogleAppsScript.Spreadsheet.Sheet;
