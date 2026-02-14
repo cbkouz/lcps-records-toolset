@@ -2,7 +2,8 @@ import { MODULES } from "@shared/shared-config";
 import { SheetUtils } from "@shared/sheet-utils";
 import { SHEET_ID_PROPERTY } from "../config";
 import { MetadataUtils } from "@shared/metadata-utils";
-import { RefocusAttendanceRepository } from "../repositories/refocus-attendance-repository";
+import { RefocusAttendanceRepository } from "../repositories/refocus-attendance-repo";
+import { RefocusLayout } from "@shared/layouts";
 
 export class RefocusAttendanceService {
   private static module: string = MODULES.REFOCUS.key;
@@ -19,7 +20,7 @@ export class RefocusAttendanceService {
     refocusSheets.forEach((sheetData) => {
       const repo = new RefocusAttendanceRepository(
         sheetData.sheet,
-        sheetData.layout,
+        sheetData.layout as RefocusLayout,
       );
       repo.run();
     });

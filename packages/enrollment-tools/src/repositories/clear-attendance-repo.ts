@@ -1,7 +1,7 @@
-import { BaseStatusRepository } from "@shared/base-status-repository";
+import { BaseStatusRepository } from "@shared/base-status-repo";
 import { toColumnLetter } from "@shared/data-utils";
+import { BaseLayout } from "@shared/layouts";
 import { COLORS } from "@shared/shared-config";
-import { BaseLayout } from "@shared/types";
 
 export class ClearAttendanceRepository extends BaseStatusRepository<{}> {
   constructor(sheet: GoogleAppsScript.Spreadsheet.Sheet, layout: BaseLayout) {

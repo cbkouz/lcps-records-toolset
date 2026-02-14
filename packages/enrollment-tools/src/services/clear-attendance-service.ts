@@ -2,7 +2,7 @@ import { LayoutKey, LAYOUT_REGISTRY } from "@shared/layouts";
 import { MODULES, CORE_COLUMNS } from "@shared/shared-config";
 import { SheetUtils } from "@shared/sheet-utils";
 import { SHEET_ID_PROPERTY } from "../config";
-import { ClearAttendanceRepository } from "../repositories/clear-attendance-repository";
+import { ClearAttendanceRepository } from "../repositories/clear-attendance-repo";
 import { MetadataUtils } from "@shared/metadata-utils";
 
 export class ClearAttendanceService {

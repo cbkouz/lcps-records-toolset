@@ -1,14 +1,17 @@
-import { BaseStatusRepository } from "@shared/base-status-repository";
+import { BaseStatusRepository } from "@shared/base-status-repo";
 import { formatDate } from "@shared/data-utils";
 import { RefocusLayout } from "@shared/layouts";
-import { BaseLayout, toSheetIndex } from "@shared/types";
+import { toSheetIndex } from "@shared/types";
 
 export interface RefocusAttendanceData {
   currentDates: string[];
 }
 
 export class RefocusAttendanceRepository extends BaseStatusRepository<RefocusAttendanceData> {
-  constructor(sheet: GoogleAppsScript.Spreadsheet.Sheet, layout: BaseLayout) {
+  constructor(
+    sheet: GoogleAppsScript.Spreadsheet.Sheet,
+    layout: RefocusLayout,
+  ) {
     super(sheet, layout);
   }
 

@@ -27,8 +27,3 @@ export type ColumnDef<T> = {
   header: string;
   key: keyof T | null;
 };
-
-export interface BaseLayout {
-  id: ArrayIndex;
-  name: ArrayIndex;
-}

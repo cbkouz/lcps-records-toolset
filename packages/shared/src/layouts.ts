@@ -1,4 +1,9 @@
-import { ArrayIndex, asArrayIndex, BaseLayout } from "./types";
+import { ArrayIndex, asArrayIndex } from "./types";
+
+export interface BaseLayout {
+  id: ArrayIndex;
+  name: ArrayIndex;
+}
 
 /** Builds layouts with ArrayValue types */
 type RawLayout = Record<string, number>;
