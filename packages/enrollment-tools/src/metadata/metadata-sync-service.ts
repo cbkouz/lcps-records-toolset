@@ -3,8 +3,10 @@ import { ConfigRepository } from "./config-repo";
 import { MetadataManager } from "./metadata-manager";
 
 export class MetadataSyncService {
-  constructor(private readonly repo: ConfigRepository, private ss: GoogleAppsScript.Spreadsheet.Spreadsheet) {
-  }
+  constructor(
+    private readonly repo: ConfigRepository,
+    private ss: GoogleAppsScript.Spreadsheet.Spreadsheet
+  ) {}
 
   public syncAll(): void {
     const configs = this.repo.getAllConfigs();

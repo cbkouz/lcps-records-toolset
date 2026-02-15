@@ -1,5 +1,5 @@
 {
-  "name": "gas-monorepo",
+  "name": "lcps-tools-monorepo",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -28,6 +28,7 @@
     "@types/google-apps-script": "^1.0.83",
     "rollup": "^4.12.0",
     "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-esbuild": "^6.2.1",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
   }
