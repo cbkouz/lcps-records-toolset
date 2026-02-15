@@ -1,4 +1,4 @@
-import typescript from "@rollup/plugin-typescript";
+import esbuild from "rollup-plugin-esbuild";
 import resolve from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
@@ -73,6 +73,15 @@ export default () => {
           },
         ],
       }),
+      esbuild({
+        target: "es2019",
+        tsconfig: path.join(projectRoot, "tsconfig.rollup.json"),
+      }),
+      resolve({
+        browser: true,
+        preferBuiltins: false,
+        extensions: [".mjs", ".js", ".json", ".node", ".ts"],
+      }),
       copy({
         targets: [
           // Copy clasp-live.json -> dist/live/.clasp.json
@@ -94,19 +103,6 @@ export default () => {
         values: {
           "process.env.NODE_ENV": JSON.stringify(env),
           BUILD_TIMESTAMP: JSON.stringify(new Date().toISOString()),
-        },
-      }),
-      resolve({
-        browser: true,
-        preferBuiltins: false,
-      }),
-      typescript({
-        // Point to project config
-        tsconfig: path.join(projectRoot, "tsconfig.json"),
-
-        // ⚡️ THE FIX: Force TS to output to the current Rollup destination
-        compilerOptions: {
-          outDir: outputDir,
         },
       }),
 
