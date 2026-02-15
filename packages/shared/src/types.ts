@@ -26,6 +26,8 @@ type ExtractKeys<T> = {
 type CoreKeys = ExtractKeys<typeof CORE_COLUMNS>;
 type ModuleKeys = ExtractKeys<typeof MODULES>;
 
+export type MetadataModuleKey = typeof MODULES[keyof typeof MODULES]["key"];
+
 export type SheetMetadata = Partial<Record<CoreKeys, string>> &
   Partial<Record<ModuleKeys, boolean>>;
 
@@ -38,3 +40,5 @@ export interface BaseColumnDef {
   header: string;
   key: string | null;
 }
+
+export type SheetWithTags = { sheet: GoogleAppsScript.Spreadsheet.Sheet, tags: Map<string, string> };
