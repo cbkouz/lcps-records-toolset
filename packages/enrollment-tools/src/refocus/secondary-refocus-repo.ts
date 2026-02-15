@@ -1,7 +1,7 @@
 import { isStudentRow, setMidnight } from "@shared/data-utils";
 import { RefocusLayout } from "@shared/layouts";
 import { ArrayIndex } from "@shared/types";
-import { RefocusSections, RefocusStudent, RefocusRecord } from "../types";
+import { RefocusSections, RefocusStudent, RefocusRecord } from "./types";
 
 // Divider text in col B
 const HS_MS_DIVIDER = { text: "LCMS Student", column: 1 as ArrayIndex };

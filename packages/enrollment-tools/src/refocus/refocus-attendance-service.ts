@@ -2,7 +2,7 @@ import { MODULES } from "@shared/shared-config";
 import { SheetUtils } from "@shared/sheet-utils";
 import { SHEET_ID_PROPERTY } from "../config";
 import { MetadataUtils } from "@shared/metadata-utils";
-import { RefocusAttendanceRepository } from "../repositories/refocus-attendance-repo";
+import { RefocusAttendanceRepository } from "./refocus-attendance-repo";
 import { RefocusLayout } from "@shared/layouts";
 
 export class RefocusAttendanceService {

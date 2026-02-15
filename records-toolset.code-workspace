@@ -43,6 +43,8 @@
       ],
       "icon": "terminal-linux"
     },
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": true
   },
 }
