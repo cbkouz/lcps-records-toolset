@@ -1,5 +1,8 @@
 // ----------------------------------------------------------------
 // 1. STANDARD TRIGGERS & MENUS
+
+import { ClearAttendanceController } from "./clear-attendance/clear-attendance-controller";
+
 // ----------------------------------------------------------------
 export function onOpen() {
   const ui = SpreadsheetApp.getUi();
@@ -9,8 +12,8 @@ export function onOpen() {
     .addItem("Inspect Active Sheet Metadata", "inspectActiveSheetMetadata");
 
   ui.createMenu("🎓 Attendance Tools")
-//     .addItem("Clear All School Attendance", "handleClearAllAttendance")
-//     .addItem("Clear Active Sheet Attendance", "handleClearCurrentAttendance")
+    .addItem("Clear All School Attendance", "runClearAllSheetsAttendance")
+    .addItem("Clear Active Sheet Attendance", "runClearCurrentSheetAttendance")
     .addSeparator()
     .addSubMenu(adminMenu)
     .addToUi();
@@ -21,6 +24,12 @@ export function onOpen() {
 // // ---------------------------------------------------------------
 export { syncConfigMetadata } from "./metadata/metadata-controllers";
 export { inspectActiveSheetMetadata } from "@shared/utilities/debug";
+export function runClearAllSheetsAttendance(): void {
+  ClearAttendanceController.clearAllSheetsAttendance();
+}
+export function runClearCurrentSheetAttendance(): void {
+  ClearAttendanceController.clearCurrentSheetAttendance();
+}
 
 
 // // ----------------------------------------------------------------
