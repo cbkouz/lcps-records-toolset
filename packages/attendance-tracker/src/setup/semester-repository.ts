@@ -1,4 +1,4 @@
-import { NAMED_RANGES } from "../config";
+import { NAMED_RANGES } from "../schema";
 import { isValidDate } from "../utilities";
 
 export interface SemesterConfig {
@@ -20,8 +20,8 @@ export class SemesterRepository {
       return acc;
     }, {} as Record<string, GoogleAppsScript.Spreadsheet.Range>);
     
-    const [startDate, endDate] = ranges.SemesterDates.getValues()[0] as [Date, Date];
-    const [endOfNineWeeks] = ranges.NineWeeks.getValue() as [Date];
+    const [startDate, endDate] = ranges.SEMESTER_DATES.getValues()[0] as [Date, Date];
+    const endOfNineWeeks = ranges.NINE_WEEKS.getValue() as Date;
     if (!isValidDate(startDate) || !isValidDate(endDate) || !isValidDate(endOfNineWeeks)) {
       throw new Error("Invalid semester dates in named ranges");
     };

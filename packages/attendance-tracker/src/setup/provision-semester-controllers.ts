@@ -1,17 +1,31 @@
-export class ProvisionSemesterControllers {
-  private static ss: GoogleAppsScript.Spreadsheet.Spreadsheet;
+import { SheetUtils } from "@shared/utilities/sheet-utils";
+import { LOCAL_SHEET_ID_PROPERTY } from "../schema";
+import { AttendanceCatalogRepository } from "../attendance-catalog/attendance-catalog-repo";
+import { SemesterRepository } from "./semester-repository";
+import { SemesterProvisioningService } from "../snow-days/provision-semester";
+import { CalendarService } from "./calendar-service";
 
-  public static deleteReportSheets(): void {
-    const sheets = this.ss.getSheets();
-  const tabsToKeep = Object.values(CONFIG.CORE_TABS) as readonly string[];
+export class ProvisionSemesterController {
+  private static _ss: GoogleAppsScript.Spreadsheet.Spreadsheet | null = null;
 
-  let deletedSheetCounter = 0;
-  sheets.forEach((sheet) => {
-    const sheetName = sheet.getName();
-    if (!tabsToKeep.includes(sheetName)) {
-      this.ss.deleteSheet(sheet);
-      deletedSheetCounter++;
+  private static get ss() {
+    if (!this._ss) {
+      console.log("Fetching spreadsheet...");
+      this._ss = SheetUtils.getLocalSs(LOCAL_SHEET_ID_PROPERTY);
     }
-  });
-  console.log(`Deleted ${deletedSheetCounter} report sheets.`);
+    return this._ss;
+  };
+
+  static setUpSemester(): void { 
+    const remoteClassInfo = AttendanceCatalogRepository.getRemoteClassInfo();
+    if (remoteClassInfo.length === 0) {
+      console.warn("No class info found in attendance catalog. Semester provisioning aborted.");
+      return;
+    }
+
+    const semesterConfig = new SemesterRepository(this.ss).getSemesterConfig();
+    const semesterDaysInfo = new CalendarService(semesterConfig).generateSemesterDates();
+
+    new SemesterProvisioningService(this.ss, semesterDaysInfo, remoteClassInfo).run();
+  }
 }

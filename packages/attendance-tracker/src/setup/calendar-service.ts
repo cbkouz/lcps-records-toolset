@@ -1,4 +1,4 @@
-import { SemesterConfig } from "./setup/semester-repository";
+import { SemesterConfig } from "./semester-repository";
 
 export interface DayInfo {
   date: Date;
@@ -27,7 +27,7 @@ export class CalendarService {
       const isSchoolDay = !nonSchoolDays.has(currentDate.toDateString());
       const isMonday = weekday === 1;
       dates.push({ date: new Date(currentDate), relativeIndex, isSchoolDay, isMonday, weekNumber });
-      if (isMonday) weekNumber++;
+      if (weekday === 5) weekNumber++; // Increment week number after Friday
       relativeIndex++;
       currentDate.setDate(currentDate.getDate() + 1);
     }
