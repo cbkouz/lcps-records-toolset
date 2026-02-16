@@ -2,7 +2,7 @@ import { SheetUtils } from "@shared/utilities/sheet-utils";
 import { SHEET_ID_PROPERTY } from "../config";
 import { CORE_COLUMNS, MODULES } from "@shared/schema";
 import { MetadataUtils } from "@shared/utilities/metadata-utils";
-import { MetadataModuleKey, SheetWithTags } from "@shared/types";
+import { MetadataModuleKey } from "@shared/types";
 import { ClearAttendanceService } from "./clear-attendance-service";
 import { ClearAttendanceRepository } from "./clear-attendance-repo";
 import { LAYOUT_REGISTRY, LayoutKey } from "@shared/layouts";

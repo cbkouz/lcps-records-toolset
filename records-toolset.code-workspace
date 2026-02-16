@@ -1,12 +1,16 @@
 {
   "folders": [
     {
+      "name": "attendance-tracker",
+      "path": "packages/attendance-tracker"
+    },
+    {
       "name": "enrollment tools",
-      "path": "packages/enrollment-tools/"
+      "path": "packages/enrollment-tools"
     },
     {
       "name": "shared",
-      "path": "packages/shared/"
+      "path": "packages/shared"
     }
   ],
   "settings": {
@@ -16,13 +20,13 @@
       "**/.vscode/": true,
       "**/appsscript.json": true,
       "**/biome.json": true,
-      "**/clasp*": false,
+      "**/clasp*": true,
       "**/dist/": false,
       "**/node_modules/": true,
       "**/package-lock.json": true,
       "**/packages/": true,
       "**/pnpm*": true,
-      "**/tsconfig*": true,
+      "**/tsconfig*": false,
     },
     "terminal.integrated.defaultProfile.linux": "Apps Script Dev",
     "terminal.integrated.profiles.linux": {
