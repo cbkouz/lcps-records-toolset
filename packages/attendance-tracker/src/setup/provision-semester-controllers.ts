@@ -1,8 +1,8 @@
 import { SheetUtils } from "@shared/utilities/sheet-utils";
 import { LOCAL_SHEET_ID_PROPERTY } from "../schema";
-import { AttendanceCatalogRepository } from "../attendance-catalog/attendance-catalog-repo";
+import { AttendanceCatalogRepository } from "../record-attendance/attendance-records-repo";
 import { SemesterRepository } from "./semester-repository";
-import { SemesterProvisioningService } from "../snow-days/provision-semester";
+import { SemesterProvisioningService } from "./provision-semester";
 import { CalendarService } from "./calendar-service";
 
 export class ProvisionSemesterController {
@@ -17,7 +17,7 @@ export class ProvisionSemesterController {
   };
 
   static setUpSemester(): void { 
-    const remoteClassInfo = AttendanceCatalogRepository.getRemoteClassInfo();
+    const remoteClassInfo = AttendanceCatalogRepository.getRemoteClassInfoForReportSheets();
     if (remoteClassInfo.length === 0) {
       console.warn("No class info found in attendance catalog. Semester provisioning aborted.");
       return;

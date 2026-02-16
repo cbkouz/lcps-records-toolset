@@ -1,5 +1,5 @@
 import { SheetIndex } from "@shared/types";
-import { ClassInfo } from "../attendance-catalog/attendance-catalog-repo";
+import { ClassInfo } from "../record-attendance/attendance-records-repo";
 import { DayInfo } from "../setup/calendar-service";
 import { createSnowDayRule, deleteReportSheets } from "../utilities";
 import { columnNumberToLetter } from "@shared/utilities/data-utils";
@@ -10,17 +10,23 @@ export class SemesterProvisioningService {
 
   public run(): void {
     // First, delete any existing report sheets to start fresh
+    console.log(`Deleting existing report sheets from spreadsheet: ${this.ss.getName()} `);
     deleteReportSheets(this.ss);
 
     // Then, create a new sheet for the first class and set it up with the appropriate formatting and metadata
+    console.log(`Creating new report sheets for ${this.classInfo.length} classes...`);
     const firstSheet = this.createFirstClassSheet();
-
+    console.log(`Created sheet: ${firstSheet.getName()}`);
     // Copy the first sheet for each additional class and update the metadata to link it to the correct class info
     for (let i = 1; i < this.classInfo.length; i++) {
       const classInfo = this.classInfo[i];
       const newSheet = firstSheet.copyTo(this.ss).setName(classInfo.tabName);
+      this.ss.setActiveSheet(newSheet);
+      this.ss.moveActiveSheet(i + 1); // Move the new sheet to the correct position in the tab order
       this.addIdTag(newSheet, classInfo.tabId);
+      console.log(`Created sheet: ${newSheet.getName()}`);
     }
+    console.log("Semester provisioning complete.");
   }
 
   private createFirstClassSheet(): GoogleAppsScript.Spreadsheet.Sheet {
@@ -55,8 +61,8 @@ export class SemesterProvisioningService {
       newSheet.deleteRows(maxRows + 1, currentRows - maxRows);
     }
 
-    // Paint odd-numbered weeks with a light gray background
-    this.getRangeToPaint(newSheet, maxRows, day => day.weekNumber % 2 === 1)?.setBackground(FORMATTING.COLORS.WEEK_BANDING);
+    // Paint even-numbered weeks with a light gray background
+    this.getRangeToPaint(newSheet, maxRows, day => day.weekNumber % 2 === 0)?.setBackground(FORMATTING.COLORS.WEEK_BANDING);
     
     // Paint non-school days with a dark gray background
     this.getRangeToPaint(newSheet, maxRows, day => !day.isSchoolDay)?.setBackground(FORMATTING.COLORS.NON_SCHOOL_DAY);
@@ -79,6 +85,7 @@ export class SemesterProvisioningService {
         const colLetter = columnNumberToLetter(index);
         return `${colLetter}1:${colLetter}${maxRows}`;
       });
+    console.log(`Found ${colsToPaint.length} columns to paint`);
     return colsToPaint.length > 0 ? sheet.getRangeList(colsToPaint) : null;
   }
 

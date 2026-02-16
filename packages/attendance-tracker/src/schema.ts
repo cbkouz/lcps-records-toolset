@@ -1,5 +1,6 @@
 export const LOCAL_SHEET_ID_PROPERTY = 'localSheetId';
 export const ENROLLMENT_SHEET_ID_PROPERTY = 'enrollmentSheetId';
+
 export const CORE_TABS = {
   ATTENDANCE_LOG: 'Attendance Log',
   CALENDAR: 'Calendar',

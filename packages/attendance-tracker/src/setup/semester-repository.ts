@@ -26,7 +26,7 @@ export class SemesterRepository {
       throw new Error("Invalid semester dates in named ranges");
     };
 
-    const [nonSchoolDays, snowDays] = [ranges.NonSchoolDays, ranges.SnowDays].map(range => {
+    const [nonSchoolDays, snowDays] = [ranges.NON_SCHOOL_DAYS, ranges.SNOW_DAYS].map(range => {
       if (!range) return new Set<string>(); // If SnowDays range is missing, return empty set
       const values = range.getValues().flat() as any[];
       const validDates = values.filter(isValidDate).map(date => date.toDateString());
