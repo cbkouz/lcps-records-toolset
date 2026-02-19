@@ -41,4 +41,5 @@ export interface BaseColumnDef {
   key: string | null;
 }
 
-export type SheetWithTags = { sheet: GoogleAppsScript.Spreadsheet.Sheet, tags: Map<string, string> };
+export type SheetWithTags = { sheet: GoogleAppsScript.Spreadsheet.Sheet, tags: SheetMetadata };
+

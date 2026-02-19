@@ -15,3 +15,11 @@ export function columnNumberToLetter(column: SheetIndex): string {
   }
   return letter;
 }
+
+export function zeroHours(date: Date): number {
+  return date.setHours(0, 0, 0, 0);
+}
+
+export function dateToString(date: Date): string {
+  return date.toISOString().split("T")[0]; // Format: YYYY-MM-DD
+}

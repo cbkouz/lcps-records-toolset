@@ -10,3 +10,11 @@ export const FORMATTING = {
     SUSPENSION: "#fff2cc",
   },
 } as const;
+
+export const ATTENDANCE_CODES = {
+  P: { symbol: "✓", weight: 2 }, // Present
+  A: { symbol: "-", weight: 1 }, // Absent
+  S: { symbol: "S", weight: 3 }, // Suspended
+} as const;
+
+export type AttendanceCode = keyof typeof ATTENDANCE_CODES;

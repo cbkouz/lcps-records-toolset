@@ -1,10 +1,9 @@
-import { MetadataModuleKey, SheetWithTags } from "@shared/types";
-import { SheetUtils } from "./sheet-utils";
+import { MetadataModuleKey, SheetMetadata, SheetWithTags } from "@shared/types";
 
 export class MetadataUtils {
-  public static createMetadataMap(sheet: GoogleAppsScript.Spreadsheet.Sheet): Map<string, string> {
+  public static createMetadataMap(sheet: GoogleAppsScript.Spreadsheet.Sheet): SheetMetadata {
     const metadata = sheet.getDeveloperMetadata();
-    return new Map(metadata.map(item => [item.getKey(), String(item.getValue())] as [string, string]));
+    return Object.fromEntries(metadata.map(meta => [meta.getKey(), meta.getValue()])) as SheetMetadata;
   }
  
   public static getModuleSheetsWithTags(
