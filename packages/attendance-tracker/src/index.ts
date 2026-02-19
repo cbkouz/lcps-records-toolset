@@ -1,4 +1,4 @@
-import { LogAttendanceController } from "./record-attendance/log-attendance-controller";
+import { dailyControllers } from "./controllers";
 import { LOCAL_SHEET_ID_PROPERTY } from "./schema";
 import { ProvisionSemesterController } from "./setup/provision-semester-controllers";
 import { deleteReportSheets } from "./utilities";
@@ -14,6 +14,6 @@ export function deleteExtraSheets(): void {
   deleteReportSheets(ss);
 }
 
-export function logDailyAttendance(): void {
-  LogAttendanceController.run();
+export function runDailyProcess(): void {
+  dailyControllers.dailyProcess();
 }

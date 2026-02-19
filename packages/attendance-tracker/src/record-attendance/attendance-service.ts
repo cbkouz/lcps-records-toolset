@@ -1,26 +1,27 @@
-import { LAYOUT_REGISTRY, LayoutKey } from "@shared/layouts";
+import { LayoutKey } from "@shared/layouts";
 import { AttendanceLogRepository } from "./attendance-log-repo";
 import { AttendanceRecordsRepository } from "./attendance-records-repo";
 import { SingleClassHarvester } from "./single-class-harvester";
-import { AttendanceRecord } from "../types";
+import { AttendanceRecord, ClassMap } from "../types";
 import { ATTENDANCE_CODES, AttendanceCode } from "../settings";
 
 export class AttendanceService {
   constructor(private logRepo: AttendanceLogRepository, private recordsRepo: AttendanceRecordsRepository) { }
   
-  public processDailyAttendance(date: Date): Map<string, AttendanceRecord[]> {
+  public processDailyAttendance(date: Date): ClassMap {
     const AttendanceSheets = this.recordsRepo.getAttendanceSheets();
     if (AttendanceSheets.length === 0) {
       throw new Error("No attendance sheets found. Please ensure sheets are properly tagged.");
     }
     
-    const classMap = new Map<string, AttendanceRecord[]>();
+    const classMap: ClassMap = new Map();
     const allRecords: AttendanceRecord[] = [];
     AttendanceSheets.forEach(({ sheet, tags }) => {
       const sheetId = sheet.getSheetId().toString();
+      const sheetName = sheet.getName();
       const harvester = new SingleClassHarvester(sheet, tags.layout as LayoutKey);
       const classRecords = harvester.getDailyRecords(date, sheetId, sheet.getName());
-      classMap.set(sheetId, classRecords);
+      classMap.set(sheetId, { tabName: sheetName, records: classRecords });
       allRecords.push(...classRecords);
     });
 

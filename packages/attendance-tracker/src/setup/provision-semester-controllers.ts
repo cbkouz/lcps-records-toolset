@@ -1,9 +1,9 @@
 import { SheetUtils } from "@shared/utilities/sheet-utils";
 import { LOCAL_SHEET_ID_PROPERTY } from "../schema";
 import { AttendanceRecordsRepository } from "../record-attendance/attendance-records-repo";
-import { SemesterRepository } from "./semester-repository";
 import { SemesterProvisioningService } from "./provision-semester";
-import { CalendarService } from "./calendar-service";
+import { CalendarService } from "../calendar-service";
+import { SemesterRepository } from "../semester-repository";
 
 export class ProvisionSemesterController {
   private static _ss: GoogleAppsScript.Spreadsheet.Spreadsheet | null = null;
@@ -16,8 +16,9 @@ export class ProvisionSemesterController {
     return this._ss;
   };
 
-  static setUpSemester(): void { 
-    const remoteClassInfo = AttendanceRecordsRepository.getRemoteClassInfoForReportSheets();
+  static setUpSemester(): void {
+    const repo = new AttendanceRecordsRepository();
+    const remoteClassInfo = repo.getRemoteClassInfoForReportSheets();
     if (remoteClassInfo.length === 0) {
       console.warn("No class info found in attendance catalog. Semester provisioning aborted.");
       return;

@@ -23,3 +23,7 @@ export function zeroHours(date: Date): number {
 export function dateToString(date: Date): string {
   return date.toISOString().split("T")[0]; // Format: YYYY-MM-DD
 }
+
+export function formatDate(date: Date, format: string): string {
+  return Utilities.formatDate(date, Session.getScriptTimeZone(), format);
+}

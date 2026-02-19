@@ -1,12 +1,13 @@
-import { NAMED_RANGES } from "../schema";
-import { isValidDate } from "../utilities";
+import { dateToString } from "@shared/utilities/data-utils";
+import { NAMED_RANGES } from "./schema";
+import { isValidDate } from "./utilities";
+
 
 export interface SemesterConfig {
   startDate: Date;
   endDate: Date;
   endOfNineWeeks: Date;
   nonSchoolDays: Set<string>; 
-  snowDays?: Set<string>; 
 }
 
 export class SemesterRepository {
@@ -26,13 +27,12 @@ export class SemesterRepository {
       throw new Error("Invalid semester dates in named ranges");
     };
 
-    const [nonSchoolDays, snowDays] = [ranges.NON_SCHOOL_DAYS, ranges.SNOW_DAYS].map(range => {
-      if (!range) return new Set<string>(); // If SnowDays range is missing, return empty set
+    const [nonSchoolDays] = [ranges.NON_SCHOOL_DAYS].map(range => {
       const values = range.getValues().flat() as any[];
-      const validDates = values.filter(isValidDate).map(date => date.toDateString());
+      const validDates = values.filter(isValidDate).map(date => dateToString(date));
       return new Set(validDates);
     });
     
-    return { startDate, endDate, endOfNineWeeks, nonSchoolDays, snowDays };
+    return { startDate, endDate, endOfNineWeeks, nonSchoolDays };
   }
 }

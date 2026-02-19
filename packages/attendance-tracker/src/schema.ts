@@ -10,6 +10,8 @@ export const CORE_TABS = {
   ATTENDANCE_LOG_BACKUP: '_AttendanceBackup',
 } as const;
 
+export const SUMMARY_SHEET = "Weekly Summary";
+
 export const NAMED_RANGES = {
   SEMESTER_DATES: 'SemesterDates', // A1:B2 range (Start/End)
   NINE_WEEKS: 'NineWeeks', // Last day of the 1st nine weeks (splits semester into quarters)

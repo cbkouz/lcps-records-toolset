@@ -8,8 +8,7 @@ import { AttendanceCode } from "../settings";
 export class AttendanceLogRepository {
   private logSheet: GoogleAppsScript.Spreadsheet.Sheet;
 
-  constructor() {
-    const ss = SheetUtils.getLocalSs(LOCAL_SHEET_ID_PROPERTY);
+  constructor(private ss: GoogleAppsScript.Spreadsheet.Spreadsheet) {
     const logSheet = ss.getSheetByName(CORE_TABS.ATTENDANCE_LOG);
     if (!logSheet) {
       throw new Error(`Attendance log sheet (${CORE_TABS.ATTENDANCE_LOG}) not found in spreadsheet.`);
