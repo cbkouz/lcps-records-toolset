@@ -37,7 +37,7 @@ export class ReportService {
     return reportData;
   }
 
-  public buildWeeklySummaryMatrix(classMap: ClassMap, dateConfig: ReportDateConfig, logData: StudentHistoryMap): any[][] {
+  public buildWeeklySummaryMatrix(classMap: ClassMap, dateConfig: ReportDateConfig, logData: StudentHistoryMap): { matrix: string[][], formattingPlan: { sectionHeaders: number[], targetZones: { startRow: number, endRow: number }[] }, summaryCols: number } {
     const summaryCols = 4; // Last Week, This Week, Q1, Q2
     const dailyLookupKeys = dateConfig.thisWeekDates.map(d => dateToString(d));
     const thisWeekSet = new Set(dailyLookupKeys);
@@ -45,6 +45,10 @@ export class ReportService {
     const blankRow = Array(dataWidth).fill("");
 
     const matrix: any[][] = [];
+    const formattingPlan = {
+      sectionHeaders: [] as number[],
+      targetZones: [] as { startRow: number, endRow: number }[]
+    };
     
     const titleRow = [`Weekly Attendance Summary for ${dateToString(dateConfig.thisWeekDates[0])} - ${dateToString(dateConfig.thisWeekDates[dateConfig.thisWeekDates.length - 1])}`,
       ...Array(dataWidth - 1).fill("")]; 
@@ -61,6 +65,9 @@ export class ReportService {
         "Absences/Suspension",
         ...Array(summaryCols-1).fill("") // Placeholder cells for totals
       ];
+      matrix.push(sectionHeader);
+      formattingPlan.sectionHeaders.push(currentRow);
+      currentRow++;
 
       const subHeader = [
         "Student Name",
@@ -70,7 +77,9 @@ export class ReportService {
         "Q1",
         "Q2"
       ];
-      matrix.push(sectionHeader, subHeader);
+      const zoneStart = currentRow;
+      matrix.push(subHeader);
+      currentRow++;
 
       for (const record of records) {
         const studentRow: any[] = [this.formatStudentName(record.studentName)];
@@ -82,9 +91,13 @@ export class ReportService {
         const absenceCounts = this.tallyStudentAbsences(logData.get(record.studentId) || new Map(), dateConfig.dateSets, thisWeekSet);
         studentRow.push(...absenceCounts);
         matrix.push(studentRow);
-      }      
+        currentRow++;
+      }
+      
+      const zoneEnd = currentRow - 1;
+      formattingPlan.targetZones.push({ startRow: zoneStart, endRow: zoneEnd });
     });
-    return matrix;
+    return { matrix, formattingPlan, summaryCols };
   }
 
   private tallyStudentAbsences(studentHistory: Map<string, AttendanceCode>, dateSets: ReportDateSets, thisWeekSet: Set<string>): number[] {

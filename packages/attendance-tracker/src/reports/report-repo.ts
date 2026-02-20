@@ -1,6 +1,7 @@
-import { dateToString } from "@shared/utilities/data-utils";
-import { LINKED_SHEET_TAG } from "../settings";
+import { columnNumberToLetter, dateToString } from "@shared/utilities/data-utils";
+import { FORMATTING, LINKED_SHEET_TAG } from "../settings";
 import { CORE_TABS, SUMMARY_SHEET } from "../schema";
+import { SheetIndex } from "@shared/types";
 
 export class ReportRepository {
   constructor(private ss: GoogleAppsScript.Spreadsheet.Spreadsheet) { }
@@ -48,7 +49,59 @@ export class ReportRepository {
     }
   }
 
-  public getSummaryReportSheet(): GoogleAppsScript.Spreadsheet.Sheet | null {
-    return this.ss.getSheetByName(SUMMARY_SHEET);
+  public writeWeeklySummary(matrix: string[][], formattingPlan: { sectionHeaders: number[], targetZones: { startRow: number, endRow: number }[] }, summaryCols: number): void {
+    const sheet = this.createOrResetSummarySheet();
+
+    if (matrix.length === 0) {
+      console.warn("No data to write to the summary sheet. Skipping.");
+      return;
+    }
+
+    const maxCols = matrix[0].length;
+    const dataRange = sheet.getRange(1, 1, matrix.length, maxCols);
+    dataRange.setFontSize(FORMATTING.DEFAULT_FONT_SIZE);
+    dataRange.setValues(matrix);
+
+    // Format sheet title
+    const titleCell = sheet.getRange(1, 1);
+    titleCell.setFontSize(FORMATTING.DEFAULT_FONT_SIZE + 2).setFontWeight("bold");
+
+    const endCol = columnNumberToLetter(maxCols as SheetIndex);
+    // Apply formatting for section headers and data zones
+    if (formattingPlan.sectionHeaders.length > 0) {
+      const headerNotations = formattingPlan.sectionHeaders.map(row => `A${row}:${endCol}${row}`);
+      sheet.getRangeList(headerNotations)
+        .setBackground(FORMATTING.COLORS.HEADER_ROW)
+        .setFontWeight("bold");
+    };
+
+    const lastDateCol = maxCols - summaryCols;
+    for (const zone of formattingPlan.targetZones) {
+      const zoneHeight = zone.endRow - zone.startRow + 1;
+      // Add borders
+      // Horizontal border below subheader
+      sheet.getRange(zone.startRow, 1, 1, maxCols)
+        .setBorder(null, null, true, null, null, null);
+
+      // Vertical border between name column and date columns
+      sheet.getRange(zone.startRow, 1, zoneHeight, 1)
+        .setBorder(null, null, null, true, null, null);
+      
+      // Vertical border between date columns and summary columns
+      sheet.getRange(zone.startRow, lastDateCol, zoneHeight, 1)
+        .setBorder(null, true, null, null, null, null);
+    }
+  }
+
+  private createOrResetSummarySheet(): GoogleAppsScript.Spreadsheet.Sheet {
+    let sheet = this.ss.getSheetByName(SUMMARY_SHEET);
+    if (!sheet) {
+      sheet = this.ss.insertSheet(SUMMARY_SHEET, 0);
+      sheet.setColumnWidth(1, 200); // Student Name column
+      sheet.setColumnWidths(2, 5, 45); // Date columns
+    } else {
+      sheet.clear();
+    }
+    return sheet;
   }
 }
