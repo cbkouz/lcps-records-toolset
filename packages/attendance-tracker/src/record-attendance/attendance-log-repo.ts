@@ -1,5 +1,4 @@
-import { SheetUtils } from "@shared/utilities/sheet-utils";
-import { buildLogRow, CORE_TABS, LOCAL_SHEET_ID_PROPERTY, LOG_COLUMNS } from "../schema";
+import { buildLogRow, CORE_TABS, LOG_COLUMNS } from "../schema";
 import { SheetIndex } from "@shared/types";
 import { dateToString, zeroHours } from "@shared/utilities/data-utils";
 import { AttendanceRecord, StudentHistoryMap } from "../types";
@@ -69,4 +68,17 @@ export class AttendanceLogRepository {
     return historyMap;
   }
 
+  public backupAttendanceLog(): void {
+    let backupSheet = this.ss.getSheetByName(CORE_TABS.ATTENDANCE_LOG_BACKUP);
+    if (!backupSheet) {
+      backupSheet = this.ss.insertSheet(CORE_TABS.ATTENDANCE_LOG_BACKUP);
+    };
+    backupSheet.clear();
+    this.logSheet.getRange(1, 1, this.logSheet.getLastRow(), this.logSheet.getLastColumn()).copyTo(backupSheet.getRange(1, 1));
+    console.log(`Backed up attendance log to ${CORE_TABS.ATTENDANCE_LOG_BACKUP}.`);
+  }
+
+  public getAttendanceLogs(): any[][] {
+    return this.logSheet.getDataRange().getValues().slice(1); // Exclude header row
+  }
 }

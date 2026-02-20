@@ -3,6 +3,7 @@ import { BaseStatusRepository } from "@shared/modules/base-status-repo";
 import { AttendanceRecord } from "../types";
 import { COLORS } from "@shared/settings";
 import { AttendanceCode } from "../settings";
+import { zeroHours } from "@shared/utilities/data-utils";
  
 type Student = {
   student: string;
@@ -25,7 +26,7 @@ export class SingleClassHarvester extends BaseStatusRepository {
     });
 
     const currentStudents = students.filter(student => 
-      student.enrollmentDate <= date &&
+      zeroHours(student.enrollmentDate) <= zeroHours(date) &&
         student.statusColor !== COLORS.STATUS.IGNORE
     )
       .map(student => ({

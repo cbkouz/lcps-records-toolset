@@ -46,7 +46,9 @@ export class CalendarService {
     return dates;
   }
 
-  public getReportDateConfig(days: DayInfo[], endOfNineWeeks: Date, refDate: Date): ReportDateConfig {
+  public getReportDateConfig(refDate: Date): ReportDateConfig {
+    const days = this.generateSemesterDates();
+    const endOfNineWeeks = this.semesterConfig.endOfNineWeeks;
     const refDateWeek = days.find(d => dateToString(d.date) === dateToString(refDate))?.weekNumber;
     if (!refDateWeek) throw new Error("Reference date is out of semester range");
 
@@ -58,5 +60,14 @@ export class CalendarService {
     const q2Dates = new Set(days.filter(d => d.date > endOfNineWeeks).map(d => dateToString(d.date)));
 
     return { thisWeekDates, dateSets: { lastWeekSet, q1Dates, q2Dates } };
+  }
+
+  public isSchoolDay(date: Date): boolean {
+    const dateStr = dateToString(date);
+    const weekday = date.getDay();
+    if (weekday === 0 || weekday === 6) return false; // Weekends
+    if (this.semesterConfig.nonSchoolDays.has(dateStr)) return false; // Non-school days
+    if (this.semesterConfig.snowDays && this.semesterConfig.snowDays.has(dateStr)) return false; // Snow days
+    return true;
   }
 }

@@ -37,7 +37,7 @@ export class ReportService {
     return reportData;
   }
 
-  public buildWeeklySummaryMatrix(classMap: ClassMap, dateConfig: ReportDateConfig, logData: StudentHistoryMap): { matrix: string[][], formattingPlan: { sectionHeaders: number[], targetZones: { startRow: number, endRow: number }[] }, summaryCols: number } {
+  public generateWeeklyReport(classMap: ClassMap, dateConfig: ReportDateConfig, logData: StudentHistoryMap): void {
     const summaryCols = 4; // Last Week, This Week, Q1, Q2
     const dailyLookupKeys = dateConfig.thisWeekDates.map(d => dateToString(d));
     const thisWeekSet = new Set(dailyLookupKeys);
@@ -97,7 +97,8 @@ export class ReportService {
       const zoneEnd = currentRow - 1;
       formattingPlan.targetZones.push({ startRow: zoneStart, endRow: zoneEnd });
     });
-    return { matrix, formattingPlan, summaryCols };
+
+    this.repo.writeWeeklySummary(matrix, formattingPlan, summaryCols);
   }
 
   private tallyStudentAbsences(studentHistory: Map<string, AttendanceCode>, dateSets: ReportDateSets, thisWeekSet: Set<string>): number[] {

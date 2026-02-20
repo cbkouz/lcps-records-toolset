@@ -17,3 +17,5 @@ export function deleteExtraSheets(): void {
 export function runDailyProcess(): void {
   dailyControllers.dailyProcess();
 }
+
+export { cleanAttendanceData } from "./clean-up";

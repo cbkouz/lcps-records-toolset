@@ -7,7 +7,8 @@ export interface SemesterConfig {
   startDate: Date;
   endDate: Date;
   endOfNineWeeks: Date;
-  nonSchoolDays: Set<string>; 
+  nonSchoolDays: Set<string>;
+  snowDays?: Set<string>;
 }
 
 export class SemesterRepository {
@@ -27,12 +28,12 @@ export class SemesterRepository {
       throw new Error("Invalid semester dates in named ranges");
     };
 
-    const [nonSchoolDays] = [ranges.NON_SCHOOL_DAYS].map(range => {
+    const [nonSchoolDays, snowDays] = [ranges.NON_SCHOOL_DAYS, ranges.SNOW_DAYS].map(range => {
       const values = range.getValues().flat() as any[];
       const validDates = values.filter(isValidDate).map(date => dateToString(date));
       return new Set(validDates);
     });
     
-    return { startDate, endDate, endOfNineWeeks, nonSchoolDays };
+    return { startDate, endDate, endOfNineWeeks, nonSchoolDays, snowDays };
   }
 }

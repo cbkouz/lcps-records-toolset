@@ -12,3 +12,8 @@ export interface AttendanceRecord {
 export type StudentHistoryMap = Map<string, Map<string, AttendanceCode>>; // studentId -> (dateString -> status)
 
 export type ClassMap = Map<string, { tabName: string; records: AttendanceRecord[] }>; // tabId -> { tabName, attendance records for that class }
+
+export interface SnowDayQueue {
+  dates: Set<string>; // Set of date strings in 'YYYY-MM-DD' format
+  rowsA1: string[]; // Corresponding A1 notation for each date
+}
