@@ -2,7 +2,7 @@ import { SheetUtils } from "@shared/utilities/sheet-utils";
 import { SHEET_ID_PROPERTY } from "../config";
 import { CORE_COLUMNS, MODULES } from "@shared/schema";
 import { MetadataUtils } from "@shared/utilities/metadata-utils";
-import { MetadataModuleKey, SheetWithTags } from "@shared/types";
+import { MetadataModuleKey, SheetMetadata } from "@shared/types";
 import { ClearAttendanceService } from "./clear-attendance-service";
 import { ClearAttendanceRepository } from "./clear-attendance-repo";
 import { LAYOUT_REGISTRY, LayoutKey } from "@shared/layouts";
@@ -24,7 +24,7 @@ export class ClearAttendanceController {
     const attendanceSheets = MetadataUtils.getModuleSheetsWithTags(this.ss, this.moduleKey);
     const response = ui.alert(
       "Clear Attendance",
-      `This will clear attendance forn ${attendanceSheets.length} sheet(s). Do you want to proceed?`,
+      `This will clear attendance for ${attendanceSheets.length} sheet(s). Do you want to proceed?`,
       ui.ButtonSet.YES_NO
     );
     if (response !== ui.Button.YES) {
@@ -47,12 +47,12 @@ export class ClearAttendanceController {
     this.ss.toast("Attendance cleared for current sheet.", "Done", 5);
   }
 
-  private static isAttendanceSheet(tags: Map<string, string>): boolean {
-    return tags.has(this.moduleKey) && tags.get(this.moduleKey) === "true";
+  private static isAttendanceSheet(tags: SheetMetadata): boolean {
+    return String(tags[this.moduleKey]) === "true";
   }
 
-  private static clearSheetAttendance(sheet: GoogleAppsScript.Spreadsheet.Sheet, tags: Map<string, string>): void {
-    const layoutKey = tags.get(CORE_COLUMNS.LAYOUT.key);
+  private static clearSheetAttendance(sheet: GoogleAppsScript.Spreadsheet.Sheet, tags: SheetMetadata): void {
+    const layoutKey = tags[CORE_COLUMNS.LAYOUT.key];
     const layout = LAYOUT_REGISTRY[layoutKey as LayoutKey]
     if (!layout) {
       throw new Error("No layout tag found for the current sheet.");

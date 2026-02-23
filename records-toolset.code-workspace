@@ -1,12 +1,16 @@
 {
   "folders": [
     {
+      "name": "attendance-tracker",
+      "path": "packages/attendance-tracker"
+    },
+    {
       "name": "enrollment tools",
-      "path": "packages/enrollment-tools/"
+      "path": "packages/enrollment-tools"
     },
     {
       "name": "shared",
-      "path": "packages/shared/"
+      "path": "packages/shared"
     }
   ],
   "settings": {
@@ -17,7 +21,7 @@
       "**/appsscript.json": true,
       "**/biome.json": true,
       "**/clasp*": false,
-      "**/dist/": false,
+      "**/dist/": true,
       "**/node_modules/": true,
       "**/package-lock.json": true,
       "**/packages/": true,

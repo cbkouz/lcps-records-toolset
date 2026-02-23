@@ -1,7 +1,14 @@
 import { BaseLayout } from "@shared/layouts";
-import { GridContext, LocatedStudent } from "./status-types";
 import { isStudentRow } from "@shared/utilities/data-utils";
-import { ArrayIndex, toSheetIndex } from "@shared/types";
+import { ArrayIndex, SheetIndex, toSheetIndex } from "@shared/types";
+
+export interface GridContext {
+  id: string;
+  rowIndex: SheetIndex;
+  statusColor: string;
+}
+
+export type LocatedStudent<T> = T & GridContext;
 
 export abstract class BaseStatusRepository {
   constructor(protected sheet: GoogleAppsScript.Spreadsheet.Sheet, protected layout: BaseLayout) { }

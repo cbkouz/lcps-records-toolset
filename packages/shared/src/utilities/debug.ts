@@ -7,7 +7,9 @@ export function inspectActiveSheetMetadata() {
   // 1. Get the data using your helper
   const metaMap = MetadataUtils.createMetadataMap(sheet);
 
-  if (metaMap.size === 0) {
+  const entries = Object.entries(metaMap).filter(([, value]) => value !== undefined);
+
+  if (entries.length === 0) {
     ui.alert(`No metadata found on sheet: ${sheet.getName()}`);
     return;
   }
@@ -24,8 +26,8 @@ export function inspectActiveSheetMetadata() {
       <table>
         <tr><th>Key</th><th>Value</th></tr>`;
 
-  // 3. Loop through map to add rows
-  metaMap.forEach((value, key) => {
+  // 3. Loop through metadata object to add rows
+  entries.forEach(([key, value]) => {
     html += `<tr><td><strong>${key}</strong></td><td>${value}</td></tr>`;
   });
 
