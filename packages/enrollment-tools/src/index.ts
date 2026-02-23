@@ -1,8 +1,9 @@
-// ----------------------------------------------------------------
-// 1. STANDARD TRIGGERS & MENUS
 
 import { ClearAttendanceController } from "./clear-attendance/clear-attendance-controller";
+import { RefocusControllers } from "./refocus/refocus-controllers";
 
+// ----------------------------------------------------------------
+// 1. STANDARD TRIGGERS & MENUS
 // ----------------------------------------------------------------
 export function onOpen() {
   const ui = SpreadsheetApp.getUi();
@@ -31,11 +32,13 @@ export function runClearCurrentSheetAttendance(): void {
   ClearAttendanceController.clearCurrentSheetAttendance();
 }
 
-
 // // ----------------------------------------------------------------
 // // 3. TRIGGER FUNCTIONS (Time-Driven or Event-Driven)
 // // ----------------------------------------------------------------
 export { nightlyBackupTrigger } from "./nightly-backup/backup-trigger";
+export function runRefocusAttendance(): void {
+  new RefocusControllers().runAttendance();
+}
 
 // // ----------------------------------------------------------------
 // // 4. Custom Functions
