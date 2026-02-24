@@ -2,10 +2,8 @@ import { RefocusLayout } from "@shared/layouts";
 import { BaseStatusRepository } from "@shared/modules/base-status-repo";
 import { LocatedStudent } from "@shared/modules/status-types";
 import { SheetIndex, toSheetIndex } from "@shared/types";
+import { RefocusAttendanceStudent } from "./refocus-types";
 
-export interface RefocusAttendanceStudent {
-  datesAttended: string[]; // json array of date strings
-}
 
 export class RefocusAttendanceRepository extends BaseStatusRepository {
   protected layout: RefocusLayout;

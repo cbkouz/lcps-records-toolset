@@ -35,7 +35,8 @@ export function runClearCurrentSheetAttendance(): void {
 // // ----------------------------------------------------------------
 // // 3. TRIGGER FUNCTIONS (Time-Driven or Event-Driven)
 // // ----------------------------------------------------------------
-export { nightlyBackupTrigger } from "./nightly-backup/backup-trigger";
+export { TRIGGER_FullNightlyAutomation } from "./nightly-backup/backup-trigger";
+
 export function runRefocusAttendance(): void {
   new RefocusControllers().runAttendance();
 }
