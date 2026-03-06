@@ -100,7 +100,7 @@ export class RefocusAutomationService {
 
   private parseEnrollmentDates(dateRange: string, year: number): { start: Date; end: Date } | null {
     const parts = dateRange.split("-");
-    if (parts.length !== 2) return null;
+    if (parts.length < 1 || parts.length > 2) return null;
     const dates = parts.map((part) => {
       const date = new Date(`${part.trim()}/${year}`);
 
@@ -108,6 +108,10 @@ export class RefocusAutomationService {
       date.setHours(0, 0, 0, 0); // Normalize time to avoid timezone issues
       return date;
     });
+
+    if (dates.length === 1) {
+      dates.push(dates[0]); // If only one date is provided, use it for both start and end
+    }
 
     if (isNaN(dates[0].getTime()) || isNaN(dates[1].getTime())) {
       return null;
