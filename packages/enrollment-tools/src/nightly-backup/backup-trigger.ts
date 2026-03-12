@@ -34,10 +34,10 @@ export function TRIGGER_FullNightlyAutomation(): void {
     console.log("Step 1: Backup Successful.");
 
     // 2. Run Refocus Automation (only happens if Step 1 didn't throw an error)
-    console.log("Step 2: Running Refocus Automation...");
-    const controller = new RefocusControllers();
-    controller.runAutomation(); 
-    console.log("Step 2: Refocus Successful.");
+    // console.log("Step 2: Running Refocus Automation...");
+    // const controller = new RefocusControllers();
+    // controller.runAutomation(); 
+    // console.log("Step 2: Refocus Successful.");
 
     console.log("--- Pipeline Completed Successfully ---");
 
